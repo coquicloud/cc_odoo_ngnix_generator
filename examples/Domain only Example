@@ -1,0 +1,21 @@
+upstream ramonrios.net {  
+    server 127.0.0.1:1212; 
+}
+server {
+    server_name ramonrios.net;
+    location / {
+        proxy_pass http://ramonrios.net;  
+        proxy_set_header Host $host;           
+        proxy_set_header X-Real-IP $remote_addr;  
+        proxy_set_header X-Forwarded-Host $host;  
+        proxy_set_header X-Forward-For $proxy_add_x_forwarded_for; 
+        proxy_set_header X-Forwarded-Proto $scheme; 
+        proxy_redirect off;
+        proxy_read_timeout 720s;   
+        proxy_connect_timeout 720s; 
+        proxy_send_timeout 720s;  
+        client_max_body_size 100M;  
+        error_page 502 /50x.html; 
+        gzip_static on;
+    }
+}
